@@ -1,5 +1,6 @@
 #include "graph.h"
 #include "fast_output.h"
+#include <set>
 
 void Graph::construct_edge(std::vector<std::pair<uint32_t, uint32_t> >& fromVertexes,
 	                       std::vector<std::pair<uint32_t, uint32_t> >& toVertexes, edgeType edge) {
@@ -7,18 +8,17 @@ void Graph::construct_edge(std::vector<std::pair<uint32_t, uint32_t> >& fromVert
 	//std::ofstream outfile;
 	//outfile.open(edgeFilePath , std::ofstream::app);
 	auto fromVertexesIterBegin = fromVertexes.begin();
-	auto fromVertexesIter = fromVertexesIterBegin;
 	uint32_t degree;
 	uint32_t edges = 0;
 	char edge_t = edgeTypeMap[edge];
-	for (auto toVertexesIter : toVertexes) {
+	for (const auto& toVertexesIter : toVertexes) {   // dsc
 		degree = toVertexesIter.second;
 		if (degree == 0) {
 			continue;
 		}
-		while (fromVertexesIterBegin->second == 0)
+		while (fromVertexesIterBegin->second == 0)    // asc
 			fromVertexesIterBegin++;
-		fromVertexesIter = fromVertexesIterBegin;
+		auto fromVertexesIter = fromVertexesIterBegin;
 		while (degree) {
 			//outfile << toVertexesIter.first << '\t' << fromVertexesIter->first << '\t' << edge_t << std::endl;
 			FastOutput::write_uint(toVertexesIter.first);
@@ -27,6 +27,10 @@ void Graph::construct_edge(std::vector<std::pair<uint32_t, uint32_t> >& fromVert
 			FastOutput::write_sep();
 			FastOutput::write_char(edge_t);
 			FastOutput::endline();
+
+			graph[toVertexesIter.first].push_back(fromVertexesIter->first);
+			graph[fromVertexesIter->first].push_back(toVertexesIter.first);
+
 			edges++;
 			fromVertexesIter->second--;
 			degree--;
@@ -60,6 +64,10 @@ void Graph::construct_bi_edge(std::vector<std::pair<uint32_t, uint32_t> >& verte
 				FastOutput::write_sep();
 				FastOutput::write_char(edge_t);
 				FastOutput::endline();
+
+				graph[curIter->first].push_back(iter->first);
+				graph[iter->first].push_back(curIter->first);
+
 				edges++;
 				iter->second--;
 				degree--;
@@ -69,5 +77,27 @@ void Graph::construct_bi_edge(std::vector<std::pair<uint32_t, uint32_t> >& verte
 	}
 	std::cerr << edges << " edges written." << std::endl;
 	//outfile.close();
+	FastOutput::close();
+}
+
+void Graph::write_adj() {
+	FastOutput::init(adjFilePath, "w");
+	uint32_t id = 0;
+	uint32_t edge = 0;
+	for (const auto& adj_list : graph) {
+		FastOutput::write_uint(id);
+		id++;
+		std::set<uint32_t> adj;
+		for (const auto& neighbor : adj_list) {
+			if (adj.find(neighbor) == adj.end()) {
+				edge++;
+				adj.insert(neighbor);
+				FastOutput::write_sep();
+				FastOutput::write_uint(neighbor);
+			}
+		}
+		FastOutput::endline();
+	}
+	std::cerr << edge / 2 << " edges in adj file" << std::endl;
 	FastOutput::close();
 }

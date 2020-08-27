@@ -36,13 +36,13 @@ protected:
 	uint8_t currentCompanyCol = 0;
 
 public:
-	std::string personFilePath, companyFilePath, vertexOutputFilePath, edgeOutputFilePath;
+	std::string personFilePath, companyFilePath, vertexOutputFilePath, edgeOutputFilePath, adjOutputFilePath;
 	std::vector<std::pair<uint32_t, uint32_t> > fromVertexes;
 	std::vector<std::pair<uint32_t, uint32_t> > toVertexes;
 	CSVReader() {};
 	void init();
 	void setPar(std::string parName, std::string parValue);
-	uint32_t getCompanyNumber() { return companyNumber; };
+	uint32_t getVertexNumber() { return companyNumber + personNumber; };
 
 	std::pair<vertexType, edgeType> prepare();
 	void generate_distribution(std::vector<uint32_t>& degree, 

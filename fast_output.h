@@ -13,7 +13,7 @@ namespace FastOutput {
 	FILE* stream = NULL;
 	int itemsize, maxbytes;
 
-	inline void init(const char* path, const char* mode = "wb", const int element_size = 1, const char& c = '\t') {
+	inline void init(const char* path, const char* mode = "wb", const int element_size = 1, const char& c = ' ') {
 		assert(stream == NULL && (stream = fopen(path, mode)) != NULL);
 		itemsize = element_size;
 		maxbytes = (outputBuffSize / element_size) * element_size;
@@ -22,7 +22,7 @@ namespace FastOutput {
 		sep = c;
 	}
 
-	inline void init(const std::string & path, const char* mode = "wb", const int element_size = 1, const char& c = '\t') {
+	inline void init(const std::string & path, const char* mode = "wb", const int element_size = 1, const char& c = ' ') {
 		init(path.c_str(), mode, element_size, c);
 	}
 
@@ -58,7 +58,6 @@ namespace FastOutput {
 	inline void write_uint(uint32_t x) {
 		char buf[20], * p = buf;
 		if (x == 0) write_char('0');
-		if (x < 0) write_char('-'), x = -x;
 		while (x > 0) * p++ = x % 10 + '0', x /= 10;
 		while (p > buf) write_char(*--p);
 	}

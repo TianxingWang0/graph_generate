@@ -21,10 +21,10 @@ int main(int argc, char* argv[]) {
 		reader.setPar(opmatch[1], opmatch[2]);
 	}
 	reader.init();
-	Graph graph(reader.vertexOutputFilePath, reader.edgeOutputFilePath);
+	Graph graph(reader.vertexOutputFilePath, reader.edgeOutputFilePath, reader.adjOutputFilePath, reader.getVertexNumber());
 	long timeElapsed;
+	cout << "*********************************************************" << endl;
 	for (int i = 0; i < 5; i++) {
-		cout << "*********************************************************" << endl;
 		auto edge = reader.prepare();
 		timeElapsed = chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - wall_clock).count();
 		cerr << "edge " << graph.vertexTypeMap[edge.first] << '/' << graph.edgeTypeMap[edge.second] << " done preparation at " << timeElapsed << " ms " << endl;
@@ -36,7 +36,11 @@ int main(int argc, char* argv[]) {
 		}
 		timeElapsed = chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - wall_clock).count();
 		cerr << "edge " << graph.vertexTypeMap[edge.first] << '/' << graph.edgeTypeMap[edge.second] << " finished at " << timeElapsed << "ms" << endl;
+		cout << "*********************************************************" << endl;
 	}
+	cout << "Writing Adjacent List File" << endl;
+	graph.write_adj();
+	timeElapsed = chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - wall_clock).count();
 	cout << "*********************************************************" << endl;
 	timeElapsed = chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - wall_clock).count();
 	cout << "time duration : " << timeElapsed << "ms" << endl;
@@ -50,4 +54,4 @@ int main(int argc, char* argv[]) {
 //                            person-node:  from company_number to company_number + person_number
 // 3.  output edge file line format: dstID '\t' srcID '\t' edgeType
 // 4.  command line input the infomation about wanted graph:
-//       ./graph_generate person_file=person.csv company_file=company.csv edge_output_file=graph.txt person_number=100229708 company_number=35902819 ci=3549620 cl=134609 cs=71318306 pi=57613205 pl=33581663
+// ./graph_generate person_file=person.csv company_file=company.csv edge_output_file=person-company adj_output_file=person-company-adj person_number=100229708 company_number=35902819 ci=3549620 cl=134609 cs=71318306 pi=57613205 pl=33581663

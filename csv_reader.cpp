@@ -16,6 +16,9 @@ void CSVReader::setPar(std::string parName, std::string parValue) {
 	else if (parName.compare("edge_output_file") == 0) {
 		edgeOutputFilePath = parValue;
 	}
+	else if (parName.compare("adj_output_file") == 0) {
+		adjOutputFilePath = parValue;
+	}
 	else if (parName.compare("person_number") == 0) {
 		const int n = stoull(parValue);
 		personNumber = n;
@@ -229,8 +232,12 @@ void CSVReader::generate_distribution(std::vector<uint32_t>& degree,
 	return;
 }
 
-bool cmp(std::pair<uint32_t, uint32_t>& x, std::pair<uint32_t, uint32_t>& y) {
+bool cmp_asc(std::pair<uint32_t, uint32_t>& x, std::pair<uint32_t, uint32_t>& y) {
 	return x.second < y.second;
+}
+
+bool cmp_dsc(std::pair<uint32_t, uint32_t>& x, std::pair<uint32_t, uint32_t>& y) {
+	return x.second > y.second;
 }
 
 std::pair<vertexType, edgeType> CSVReader::prepare() {
@@ -259,8 +266,8 @@ std::pair<vertexType, edgeType> CSVReader::prepare() {
 		default:
 			break;
 		}
-		std::sort(fromVertexes.begin(), fromVertexes.end(), cmp);
-		std::sort(toVertexes.begin(), toVertexes.end(), cmp);
+		std::sort(fromVertexes.begin(), fromVertexes.end(), cmp_asc);
+		std::sort(toVertexes.begin(), toVertexes.end(), cmp_dsc);
 	}
 	else { // bi-direction edge between COMPANY and COMPANY
 		if (edge.second == LEGAL) {
@@ -269,6 +276,7 @@ std::pair<vertexType, edgeType> CSVReader::prepare() {
 		else {
 			generate_distribution(companyDegree[currentCompanyCol], fromVertexes, companyNumber, ci);
 		}
+		std::sort(fromVertexes.begin(), fromVertexes.end(), cmp_dsc);
 	}
 	currentCompanyCol++;
 	return edge;
