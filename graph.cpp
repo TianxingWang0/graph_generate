@@ -1,6 +1,6 @@
 #include "graph.h"
 #include "fast_output.h"
-#include <set>
+
 
 void Graph::construct_edge(std::vector<std::pair<uint32_t, uint32_t> >& fromVertexes,
 	                       std::vector<std::pair<uint32_t, uint32_t> >& toVertexes, edgeType edge) {
@@ -87,14 +87,15 @@ void Graph::write_adj() {
 	for (const auto& adj_list : graph) {
 		FastOutput::write_uint(id);
 		id++;
-		std::set<uint32_t> adj;
+		std::set<uint32_t> adj_set;
 		for (const auto& neighbor : adj_list) {
-			if (adj.find(neighbor) == adj.end()) {
-				edge++;
-				adj.insert(neighbor);
-				FastOutput::write_sep();
-				FastOutput::write_uint(neighbor);
-			}
+			adj_set.insert(neighbor);
+		}
+		FastOutput::write_sep();
+		FastOutput::write_uint(adj_set.size());
+		for (const auto& neighbor : adj_set) {
+			FastOutput::write_sep();
+			FastOutput::write_uint(neighbor);
 		}
 		FastOutput::endline();
 	}
