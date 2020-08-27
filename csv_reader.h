@@ -9,6 +9,7 @@
 #include <cstdlib>
 #include <unordered_map>
 
+
 enum vertexType {
 	PERSON,
 	COMPANY
@@ -23,7 +24,7 @@ enum edgeType {
 
 class CSVReader {
 protected:
-	uint32_t personNumber = 0, companyNumber = 0, ci = 0, cl = 0, cs = 0, pi = 0, pl = 0;
+	
 
 	std::vector<std::pair<vertexType, edgeType> > personCols, companyCols;
 
@@ -36,6 +37,7 @@ protected:
 	uint8_t currentCompanyCol = 0;
 
 public:
+	uint32_t personNumber = 0, companyNumber = 0, ci = 0, cl = 0, cs = 0, pi = 0, pl = 0;
 	std::string personFilePath, companyFilePath, vertexOutputFilePath, edgeOutputFilePath, adjOutputFilePath;
 	std::vector<std::pair<uint32_t, uint32_t> > fromVertexes;
 	std::vector<std::pair<uint32_t, uint32_t> > toVertexes;

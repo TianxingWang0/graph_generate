@@ -1,7 +1,6 @@
 #include "csv_reader.h"
 #include <algorithm>
 
-
 void CSVReader::setPar(std::string parName, std::string parValue) {
 	if (parName.compare("person_file") == 0)
 	{
@@ -58,19 +57,6 @@ void CSVReader::init() {
 	parse_csv(companyFilePath, companyDegree, companyCols);
 	std::cerr << "read in " << companyDegree[0].size() << " lines from company file." << std::endl;
 	std::cerr << "csv files done parse" << std::endl;
-	// std::ofstream outfile;
-	// outfile.open(vertexOutputFilePath);
-	// uint32_t id = 0;
-	// while (id < companyNumber) {
-	// 	outfile << id << '\t' << 'c' << std::endl;
-	// 	id++;
-	// }
-	// uint32_t total = companyNumber + personNumber;
-	// while (id < total) {
-	// 	outfile << id << '\t' << 'p' << std::endl;
-	// 	id++;
-	// }
-	// outfile.close();
 }
 
 void CSVReader::parse_csv(std::string& file_path, std::vector<uint32_t>* degree,

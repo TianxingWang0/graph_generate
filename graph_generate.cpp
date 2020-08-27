@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
 		reader.setPar(opmatch[1], opmatch[2]);
 	}
 	reader.init();
-	Graph graph(reader.vertexOutputFilePath, reader.edgeOutputFilePath, reader.adjOutputFilePath, reader.getVertexNumber());
+	Graph graph(reader.vertexOutputFilePath, reader.edgeOutputFilePath, reader.adjOutputFilePath, reader.companyNumber, reader.personNumber);
 	long timeElapsed;
 	cout << "*********************************************************" << endl;
 	for (int i = 0; i < 5; i++) {
